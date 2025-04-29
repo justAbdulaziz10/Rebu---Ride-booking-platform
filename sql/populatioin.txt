@@ -1,0 +1,119 @@
+-- Insert Vehicle Types (Skip duplicates)
+INSERT INTO public.vehicletype (id, type, name, multiplier)
+VALUES
+    (1, 'Sedan', 'Toyota Camry', 1),
+    (2, 'SUV', 'Nissan Patrol', 2),
+    (3, 'Luxury', 'Mercedes S-Class', 3),
+    (4, 'Electric', 'Tesla Model 3', 2)
+ON CONFLICT (id) DO NOTHING;
+
+-- Insert Drivers with Duplicate Handling
+INSERT INTO public.driver (did, email, dlocation, driverlicense, name, phone, status)
+SELECT
+    id,
+    'driver' || id || '@example.com',
+    point(random() * 50, random() * 50),
+    'DL' || (10000 + id),
+    CASE 
+        WHEN id % 4 = 0 THEN 'Ahmad Alhassan' 
+        WHEN id % 4 = 1 THEN 'Fahad Alshehri' 
+        WHEN id % 4 = 2 THEN 'Yousef Alotaibi' 
+        ELSE 'Khalid Almohammed' 
+    END,
+    '05' || (10000000 + id),
+    CASE 
+        WHEN id % 4 = 0 THEN 'online' 
+        WHEN id % 4 = 1 THEN 'busy' 
+        WHEN id % 4 = 2 THEN 'offline' 
+        ELSE 'suspended' 
+    END
+FROM generate_series(1, 200) AS id
+ON CONFLICT (did) DO NOTHING;
+
+-- Insert Riders with Duplicate Handling
+INSERT INTO public.rider (rid, email, name, phone, status, rlocation)
+SELECT
+    id,
+    'rider' || id || '@example.com',
+    CASE 
+        WHEN id % 4 = 0 THEN 'Sultan Alfarhan' 
+        WHEN id % 4 = 1 THEN 'Hamad Almansour' 
+        WHEN id % 4 = 2 THEN 'Abdullah Alqahtani' 
+        ELSE 'Omar Alsaad' 
+    END,
+    '05' || (20000000 + id),
+    'active',
+    point(random() * 50, random() * 50)
+FROM generate_series(1, 200) AS id
+ON CONFLICT (rid) DO NOTHING;
+
+-- Insert Trips with Duplicate Handling
+INSERT INTO public.trip (tid, dropoff, distance, pickup, price, tripsstatus, starttime, endtime, routetaken, rideduration, did, rid)
+SELECT
+    id,
+    point(random() * 50, random() * 50),
+    (random() * 50)::int,
+    point(random() * 50, random() * 50),
+    (random() * 100 + 20)::int,
+    CASE 
+        WHEN id % 3 = 0 THEN 'completed' 
+        WHEN id % 3 = 1 THEN 'in progress' 
+        ELSE 'canceled' 
+    END,
+    '08:00:00'::time + (id % 12) * interval '30 minutes',
+    '08:30:00'::time + (id % 12) * interval '30 minutes',
+    'Route ' || id,
+    MAKE_INTERVAL(0, 0, 0, 0, 0, (10 + id % 30), 0)::TIME WITHOUT TIME ZONE,
+    (id % 200) + 1,
+    (id % 200) + 1
+FROM generate_series(1, 200) AS id
+ON CONFLICT (tid) DO NOTHING;
+
+-- Insert Vehicles with Duplicate Handling
+INSERT INTO public.vehicle (platenumber, model, brand, vid, did)  
+SELECT  
+    'ABC' || id,  
+    CASE WHEN id % 4 = 0 THEN 'Camry'  
+         WHEN id % 4 = 1 THEN 'Patrol'  
+         WHEN id % 4 = 2 THEN 'S-Class'  
+         ELSE 'Model 3' END,  
+    CASE WHEN id % 4 = 0 THEN 'Toyota'  
+         WHEN id % 4 = 1 THEN 'Nissan'  
+         WHEN id % 4 = 2 THEN 'Mercedes'  
+         ELSE 'Tesla' END,  
+    (id % 4) + 1,  
+    (id % 200) + 1  
+FROM generate_series(1, 200) AS id
+ON CONFLICT (platenumber) DO NOTHING;
+
+-- Insert Additional Vehicle Types with Duplicate Handling
+INSERT INTO public.vehicletype (id, type, name, multiplier)
+SELECT
+    id + 100,  
+    CASE 
+        WHEN id % 3 = 0 THEN 'Sedan' 
+        WHEN id % 3 = 1 THEN 'SUV' 
+        ELSE 'Luxury' 
+    END,
+    CASE 
+        WHEN id % 3 = 0 THEN 'Standard' 
+        WHEN id % 3 = 1 THEN 'Premium' 
+        ELSE 'Elite' 
+    END,
+    (id % 3) + 1
+FROM generate_series(1, 5) AS id
+ON CONFLICT (id) DO NOTHING;
+
+-- Insert Favorite Locations with Duplicate Handling
+INSERT INTO public.favlocation (lid, name, coordinates, rid)
+SELECT
+    id,
+    CASE 
+        WHEN id % 3 = 0 THEN 'Mall of Riyadh' 
+        WHEN id % 3 = 1 THEN 'Jeddah Corniche' 
+        ELSE 'Kingdom Tower' 
+    END,
+    point(random() * 50, random() * 50),
+    (id % 200) + 1
+FROM generate_series(1, 200) AS id
+ON CONFLICT (lid) DO NOTHING;

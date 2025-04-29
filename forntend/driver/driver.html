@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REBU</title>
+    <script src="driver\driver.js"></script> <!-- Your script Directory -->
+    <link rel="stylesheet" href="driver\driver.css" /> <!-- Your css Directory -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    
+</head>
+
+<body>
+    <div class="container">
+        <div class="map-container">
+            <div id="map"></div>
+    </div>
+
+    <div class="fields-container">
+        
+        <!-- Login Form -->
+        <div id="login-form" style="display: none;">
+                <h2>Login to REBU</h2>
+                
+                <div class="input-group">
+                    <label for="login-email">Email </label>
+                    <input type="email" id="login-email" placeholder="Enter your email">
+                </div>
+                
+                <div class="input-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" placeholder="Enter your password">
+                </div>
+                <span id="login-alert" style="display: none; color: red; font-size: 15px;">Email Or Password Invalid Please Try Again !</span>
+                
+                <button id="login-btn">Login</button>
+                
+                <div class="login-footer">
+                    <p>Don't have an account? <a href="#" id="register-link">Register</a></p>
+                </div>
+        </div>
+            
+            <!--Rider Form (hidden)-->
+         <div id="rider-form" style="display: none;">
+                <h2> Driver's Form </h2>
+
+                <div class="input-group">
+                    <label>Your Location</label>
+                    <input type="text" id="Pick" placeholder="Location coordinates" readonly>
+                    <button id="Slecet-pick">Select</button>
+                    
+                </div>
+                <button id="submit">Submit</button>
+                <button id="logout-btn">Logout</button>
+        </div>
+
+            <!--Waiting Page (hidden)-->
+        <div id="waiting-screen" style="display: none;">
+                <h3 id="waiting-message">(1) Rider(s) Found !</h3>
+                <div class="status-container">
+
+                    <div id="cards" style="display: none;">
+                        <p style="padding-top: 15px; padding-left: 10px; text-align: left;">Rider: <span id="rider-name">Rakan</span></p>
+                        <p style="padding-top: 1px; padding-left: 10px; text-align: left;">Number: <span id="rider-phone">555-555-555</span></p>
+                        <p style="padding-top: 1px; padding-left: 10px; text-align: left;">(<span id="rider-kms">3</span>) KM Away</p>
+                        <p style="padding-top: 1px; padding-left: 10px; text-align: left;">ETA: <span id="rider-eta">null</span></p>
+                        <div class="split-button-container">
+                            <button id="Accept" class="split-button-ac">Accept</button>
+                            <button id="Reject" class="split-button-re">Reject</button>
+                        </div>
+                    </div>                    
+                </div>
+        </div>
+        
+        <!--Invoice Screen (hidden)-->
+    <div id="invoice-screen" style="display: none;">
+        <h3 id="invoice-title">Trip Completed</h3>
+        <div class="status-container">
+            <div id="invoice-card">
+                <h4 style="text-align: center; margin-bottom: 15px;">Trip Invoice</h4>
+                
+                <div class="invoice-row">
+                    <p class="invoice-label">Trip Price</p>
+                    <p class="invoice-dots">...................................</p>
+                    <p class="invoice-value"><span id="trip-price">10.35</span> SAR</p>
+                </div>
+                
+                <div class="invoice-row">
+                    <p class="invoice-label">Car Type: <span id="car-type">Deluxe</span></p>
+                    <p class="invoice-dots">...................</p>
+                    <p class="invoice-value">+<span id="car-fee">10</span> SAR</p>
+                </div>
+                
+                <div class="invoice-row">
+                    <p class="invoice-label">Service Fees</p>
+                    <p class="invoice-dots">.............................</p>
+                    <p class="invoice-value">+<span id="service-fee">5</span> SAR</p>
+                </div>
+                
+                <div class="invoice-divider"></div>
+                
+                <div class="invoice-row total-row">
+                    <p class="invoice-label">Total</p>
+                    <p class="invoice-dots">............................................</p>
+                    <p class="invoice-value"><span id="total-price">25.35</span> SAR</p>
+                </div>
+                
+                <button id="finish-trip" class="finish-button">Finish Trip</button>
+            </div>
+            <p class="confirmation-note">PRESSING THE "FINISH TRIP" BUTTON IS A FINAL AND CONFIRMATIVE ACTION AND WILL END THE TRANSACTION!</p>
+
+            
+        </div>
+    </div>
+
+                
+        <div class="coordinates" id="coordinates">
+            Latitude: 0.00, Longitude: 0.00
+        </div>
+        <div class="coordinates" id="did">
+                    DID = null
+    </div>
+
+</body>
+</html>

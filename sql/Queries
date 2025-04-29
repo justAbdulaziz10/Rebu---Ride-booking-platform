@@ -1,0 +1,113 @@
+--هذي بدايه رحله جديده كل شي طبيعي يتغير بس اهم شي حال الرحله و
+--did زي ما هم 
+-- او اي شي null
+INSERT INTO trip (tid=2324,tripsstatus='pending',distance=null , price = null
+,rid=1233,pickup,dropoff,did=null,starttime=now() , endtime=null,routetaken=null,rideduration=null)
+
+-- هذي تلقا اقرب خمس سواقين لمكان بدايه الرحله ممكن وطبيعي نزود عدد السواقين بس مدري في راسي فكره انها تتكرر ثلاث مرات من الكود بعدها خلاص تتكنسل
+-- اي شي where ممكن يتغير عادي 
+-- ممكن تلاحظ اني غيرت ترتيب عمليات join 
+--هذي في الاندكس بتفبد توه شارحها 
+SELECT 
+    driver.did,
+    ST_Distance(
+        ST_SetSRID(ST_MakePoint(trip.pickup[0], trip.pickup[1]), 4326)::geography,
+        ST_SetSRID(ST_MakePoint(driver.dlocation[0],driver.dlocation[1]), 4326)::geography 
+    ) / 1000 AS How_Far_are_they
+FROM vehicletype
+JOIN vehicle ON vehicletype.id = vehicle.vid
+JOIN driver on driver.did = vehicle.did
+JOIN trip on trip.did = driver.did
+where driver.status = 'online' and
+vehicletype."type" = 'Electric' and tirp.tid = 2324 
+AND How_Far_are_they <= 5
+ORDER BY How_Far_are_they
+LIMIT 5 ;
+
+--cluase made
+SELECT 
+    trip.tid,
+    trip.rid,
+    ST_Distance(
+        ST_SetSRID(ST_MakePoint(trip.pickup[0], trip.pickup[1]), 4326)::geography,
+        ST_SetSRID(ST_MakePoint((SELECT dlocation[0] FROM driver WHERE did = 2), 
+                               (SELECT dlocation[1] FROM driver WHERE did = 2)), 4326)::geography
+    ) / 1000 AS distance_km
+FROM trip
+WHERE trip.tripsstatus = 'pending'  -- Only pending trips
+AND trip.did IS NULL  -- Only unassigned trips
+AND ST_Distance(
+    ST_SetSRID(ST_MakePoint(trip.pickup[0], trip.pickup[1]), 4326)::geography,
+    ST_SetSRID(ST_MakePoint((SELECT dlocation[0] FROM driver WHERE did = 2), 
+                           (SELECT dlocation[1] FROM driver WHERE did = 2)), 4326)::geography
+) / 1000 <= 5  -- Within 5km
+ORDER BY distance_km  -- Closest first
+LIMIT 1;  -- Just one result
+
+-- هنا ناخذ did 
+--من الي فوقها ونضيفهم في الجدول ذا لازم رقم الرحله يكون ثابت بينهم لان الهدف ارسال رحله لاكثر من سواق ممكن كلمه ماتكون افضل شي بس هذا الي طلع معي 
+-- العمليات ذي المفروض انها تجي بشكل افضل بس ما دليت فيها
+INSERT INTO driverrespond (did=1,tid=2324,'pending')
+INSERT INTO driverrespond (did=3,tid=2324,'pending')
+INSERT INTO driverrespond (did=44,tid=2324,'pending')
+INSERT INTO driverrespond (did=15,tid=2324,'pending')
+INSERT INTO driverrespond (did=13,tid=2324,'pending')
+
+-- اذا واحد قبل نعدل عليه والباقي نعطبهم رفض 
+UPDATE driverrespond set respond='accsept' WHERE did=44 and tid= 2324
+update driverrespond set respond='reject' where did!=44 AND tid = 2324
+
+-- تحديث حاله السواق الي قبل 
+update driver set status = 'busy' where did=44
+
+-- تحديث حاله الرحله 
+update trip set tripstatus = 'inprogres' where tid=2324
+
+-- هو كان null
+--الحين يوم حطينا لها سواق تغير
+update trip set did = 44 where tid 2324  
+
+-- اخذ نوع السياره الخاص   
+SELECT multiplier FROM vehicletype WHERE type = 'elctronc'
+
+-- عمليه تحديث السعر اذا كان في منطقه ذروه او نوع سياره خاص 
+-- COALESCE تستخدم اذا ماكنت في منطقه ذروه بدال نل تكون 1 
+-- type عادي يتغير 
+UPDATE trip
+SET price = price * 
+      COALESCE((SELECT multiplier FROM surgearea 
+              WHERE ST_Contains(zone::geometry, ST_SetSRID(ST_MakePoint(trip.pickup[0], trip.pickup[1]), 4326))), 1) 
+    *  
+    COALESCE((SELECT multiplier FROM vehicletype 
+              WHERE type = 'electronic'), 1)
+WHERE tid = 2324;
+
+-- اذا وصل للوجهه
+update driver set status = 'online' where did=44
+update trip set tripstatus = 'completed' ,endtime=now() where tid=2324
+
+-- حساب المسافه 
+update trip set distance = ST_Distance(
+        ST_SetSRID(ST_MakePoint(trip.pickup[0], trip.pickup[1]), 4326)::geography,
+        ST_SetSRID(ST_MakePoint(trip.dropoff[0],trip.dropoff[1]), 4326)::geography 
+    ) / 1000 
+where tid =2324
+--هذي حساب السعر الاولي ثم نضيف العمليه الثانيه 
+update trip set price = distance*1.5 where tid =2324
+--الغاء الرحله 
+update trip set tripstatus = 'canseled'  where tid=2324
+-- فكره تتبع السواق شوي ماضبطت معي فيه طريقه بس مانيب متاكد منها بحطها بس توقع انها 50% صح
+ALTER TABLE trip COLUMN routetaken geometry(LINESTRING, 4326);
+INSERT INTO trip (tid, tripsstatus, pickup, dropoff, routetaken)
+VALUES (2325, 'inprogress', 
+        ST_SetSRID(ST_MakePoint(-73.935242, 40.730610), 4326),  -- Pickup Point
+        ST_SetSRID(ST_MakePoint(-73.933242, 40.750610), 4326),  -- Dropoff Point
+        ST_GeomFromText('LINESTRING(-73.935242 40.730610, -73.934242 40.740610, -73.933242 40.750610)', 4326));
+
+
+
+-- حساب مده الرحله
+update trip set duration = (distance/40)*60 where tid = 2324;
+-- حساب الوقت المتوقع ل نهايه الرحله 
+update trip set endtime = starttime+duration where tid = 2324;
+

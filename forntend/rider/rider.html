@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REBU</title>
+    <script src="rider\rider.js"></script> <!-- Your script Directory -->
+    <link rel="stylesheet" href="rider/rider.css" /> <!-- Your css Directory -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    
+</head>
+
+<body>
+    <div class="container">
+        <div class="map-container">
+            <div id="map"></div>
+    </div>
+
+    <div class="fields-container">
+        
+        <!-- Login Form -->
+        <div id="login-form">
+                <h2>Login to REBU</h2>
+                
+                <div class="input-group">
+                    <label for="login-email">Email </label>
+                    <input type="email" id="login-email" placeholder="Enter your email">
+                </div>
+                
+                <div class="input-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" placeholder="Enter your password">
+                </div>
+                <span id="login-alert" style="display: none; color: red; font-size: 15px;">Email Or Password Invalid Please Try Again !</span>
+                
+                <button id="login-btn">Login</button>
+                
+                <div class="login-footer">
+                    <p>Don't have an account? <a href="#" id="register-link">Register</a></p>
+                </div>
+        </div>
+            
+            <!--Rider Form (hidden)-->
+         <div id="rider-form" style="display: none;">
+                <h2>Riders Form</h2>
+
+                <div class="input-group">
+                    <label>Pick Up</label>
+                    <input type="text" id="Pick" placeholder="Pick Up coordinates" readonly>
+                    <button id="Slecet-pick">Select</button>
+                
+                    <label style="padding-top: 25px;">Drop Off</label>
+                    <input type="text" id="Drop" placeholder="Drop Off coordinates" readonly>
+                    <button id="Slecet-drop">Select</button>
+                    
+                </div>
+
+                
+                <div class="vehicle-type-section">
+                    <div class="vehicle-type-container">
+                        <label class="vehicle-button">
+                            <input type="radio" name="vehicleType" value="1" checked hidden>
+                            <span>Econemy</span>
+                        </label>
+                        <label class="vehicle-button">
+                            <input type="radio" name="vehicleType" value="2" hidden>
+                            <span>Family</span>
+                        </label>
+                        <label class="vehicle-button">
+                            <input type="radio" name="vehicleType" value="3" hidden>
+                            <span>Premuim</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button id="submit">Submit</button>
+                <button id="logout-btn">Logout</button>
+        </div>
+
+            <!--Waiting Page (hidden)-->
+        <div id="waiting-screen" style="display: none;">
+                <h3 id="waiting-message">Waiting for a driver to accept your trip...</h3>
+                <div class="status-container">
+                    <p>Current status: <span id="trip-status">pending</span></p>
+                    <div class="loading-spinner"></div>
+                </div>
+                <button id="continue-btn" style="display: none;">Continue</button>
+        </div>
+
+            <!--Invoice Page (hidden)-->
+        <div id="invoice-screen" style="display: none;">
+            <h3 id="invoice-title">Trip Completed</h3>
+            <div class="status-container">
+                <div id="invoice-card">
+                    <h4 style="text-align: center; margin-bottom: 15px;">Trip Invoice</h4>
+                    
+                    <div class="invoice-row">
+                        <p class="invoice-label">Trip Price</p>
+                        <p class="invoice-dots">...................................</p>
+                        <p class="invoice-value"><span id="trip-price">10.35</span> SAR</p>
+                    </div>
+                    
+                    <div class="invoice-row">
+                        <p class="invoice-label">Car Type: <span id="car-type">Deluxe</span></p>
+                        <p class="invoice-dots">...................</p>
+                        <p class="invoice-value">+<span id="car-fee">10</span> SAR</p>
+                    </div>
+
+                    <div class="invoice-row" id="invoice-row-SurgeArea" style="display: none;">
+                        <p class="invoice-label">SurgeArea</p>
+                        <p class="invoice-dots">.............................</p>
+                        <p class="invoice-value">+<span id="SurgeArea-fee">0</span> SAR</p>
+                    </div>
+                    
+                    <div class="invoice-row">
+                        <p class="invoice-label">Service Fees</p>
+                        <p class="invoice-dots">.............................</p>
+                        <p class="invoice-value">+<span id="service-fee">5</span> SAR</p>
+                    </div>
+                    
+                    <div class="invoice-divider"></div>
+                    
+                    <div class="invoice-row total-row">
+                        <p class="invoice-label">Total</p>
+                        <p class="invoice-dots">............................................</p>
+                        <p class="invoice-value"><span id="total-price">25.35</span> SAR</p>
+                    </div>
+                    
+                    <button id="finish-trip" class="finish-button">Confirm</button>
+                </div>
+                <p class="confirmation-note">PRESSING THE "CONFIRM" BUTTON IS A FINAL AND CONFIRMATIVE ACTION AND WILL END THE TRANSACTION!</p>
+    
+
+                
+        <div class="coordinates" id="coordinates">
+            Latitude: 0.00, Longitude: 0.00
+        </div>
+        <div class="coordinates" id="rid">
+                    RID = null
+        </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

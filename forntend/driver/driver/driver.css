@@ -1,0 +1,382 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #000000, #673d3d);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    width: 90%;
+    max-width: 1500px;
+    height: 1000px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    display: flex;
+}
+
+.map-container {
+    flex: 2;
+    height: 100%;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px 0 0 20px;
+}
+
+.fields-container {
+    width: 400px;
+    padding: 35px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.fields-container h2 {
+    padding-top: 20px;
+    color: white;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 24px;
+}
+
+.input-group {
+    margin-bottom: 25px;
+    position: relative;
+    width: 100%;
+
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.input-group input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.input-group input#Pick,
+.input-group input#Drop {
+    width: 70%;
+    border-radius: 8px 0 0 8px;
+}
+
+#Slecet-pick,#Slecet-drop {
+    position: absolute;
+    right: 0;
+    width: 30%;
+    height: 50px;
+    border-radius: 0 8px 8px 0;
+    margin: 0;
+    padding: 0 10px;
+}
+
+#Slecet-drop {
+    bottom: 0;
+}
+
+button {
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+button:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+button:active{
+    background: rgba(56, 51, 51, 0.25);
+}
+
+.coordinates {
+    margin-top: 25px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    text-align: center;
+}
+
+#login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+#login-btn {
+    width: 100%;
+    padding: 14px;
+    background: rgba(52, 152, 219, 0.3);
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+#login-btn:hover {
+    background: rgba(52, 152, 219, 0.5);
+}
+
+.login-footer {
+    margin-top: 25px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+}
+
+.login-footer a {
+    color: rgba(52, 152, 219, 0.8);
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.login-footer a:hover {
+    color: rgba(52, 152, 219, 1);
+    text-decoration: underline;
+}
+
+#logout-btn {
+    width: 100%;
+    padding: 14px;
+    background: rgba(231, 76, 60, 0.3);
+    margin-top: 15px;
+}
+
+#logout-btn:hover {
+    background: rgba(231, 76, 60, 0.5);
+}
+
+#submit {
+    width: 100%;
+    margin-top: 15px;
+}
+
+#waiting-screen {
+    text-align: center;
+    padding: 25px 0;
+}
+
+#waiting-message {
+    color: rgba(255, 255, 255);
+    margin-bottom: 25px;
+    font-size: 18px;
+}
+
+.status-container {
+    background: rgba(0, 0, 0, 0.226);
+    color: rgb(255, 255, 255);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 25px 0;
+    height: 600px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+} 
+
+#trip-status {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    margin: 25px auto;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    border-top: 4px solid rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#continue-btn {
+    background: rgba(76, 175, 80, 0.3);
+    padding: 14px 28px;
+    margin-top: 25px;
+}
+
+#continue-btn:hover {
+    background: rgba(76, 175, 80, 0.5);
+}
+
+#cards {
+    border-color: #4CAF50;
+    border-radius: 10px;
+    min-height: 100px;
+    background-color: rgb(88, 54, 54);
+    position: relative;
+    padding-bottom: 4rem;
+}
+
+.split-button-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    padding: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.split-button-ac, .split-button-re {
+    background-color: rgb(52, 32, 32);
+    width: 142px;
+    height: 51px;
+}
+
+.split-button-ac {
+    border-radius: 0 0 0 8px;
+    
+}
+
+.split-button-re {
+    border-radius: 0 0 8px 0;
+}
+
+.split-button-re:hover {
+    background-color: rgb(148, 39, 39);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+.split-button-ac:hover {
+    background-color: rgb(38, 38, 130);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+#cards p {
+    padding-top: 15px;
+    text-align: left;
+    word-wrap: break-word;
+    margin-bottom: 1rem;
+}
+
+#invoice-screen {
+    text-align: center;
+    padding: 20px 0;
+}
+
+#invoice-title {
+    color: rgba(255, 255, 255);
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+#invoice-card {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgb(255, 255, 255);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.invoice-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+    position: relative;
+    white-space: nowrap;
+}
+
+.invoice-label {
+    text-align: left;
+    flex-shrink: 0;
+}
+
+.invoice-dots {
+    color: rgba(255, 255, 255, 0.5);
+    overflow: hidden;
+    flex-grow: 1;
+    margin: 0 5px;
+}
+
+.invoice-value {
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.invoice-divider {
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    margin: 15px 0;
+}
+
+.total-row {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-top: 15px;
+}
+
+.finish-button {
+    width: 100%;
+    padding: 12px;
+    background: rgb(191, 15, 15);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: auto;
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: calc(100% - 40px);
+}
+
+.confirmation-note,.coordinates {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    font-style: italic;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.finish-button:hover {
+    background: rgba(194, 15, 15, 0.5);
+}
+.finish-button:active {
+    background: rgba(129, 12, 12, 0.5);
+}
