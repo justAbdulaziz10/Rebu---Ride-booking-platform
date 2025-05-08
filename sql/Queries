@@ -1,13 +1,6 @@
---هذي بدايه رحله جديده كل شي طبيعي يتغير بس اهم شي حال الرحله و
---did زي ما هم 
--- او اي شي null
 INSERT INTO trip (tid=2324,tripsstatus='pending',distance=null , price = null
 ,rid=1233,pickup,dropoff,did=null,starttime=now() , endtime=null,routetaken=null,rideduration=null)
 
--- هذي تلقا اقرب خمس سواقين لمكان بدايه الرحله ممكن وطبيعي نزود عدد السواقين بس مدري في راسي فكره انها تتكرر ثلاث مرات من الكود بعدها خلاص تتكنسل
--- اي شي where ممكن يتغير عادي 
--- ممكن تلاحظ اني غيرت ترتيب عمليات join 
---هذي في الاندكس بتفبد توه شارحها 
 SELECT 
     driver.did,
     ST_Distance(
